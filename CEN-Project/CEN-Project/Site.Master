@@ -46,13 +46,19 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/">Application name</a>
+                    <a class="navbar-brand" runat="server" href="~/">FSU Tournament Hub</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
-                        <li><a runat="server" href="~/Contact">Contact</a></li>
+                        <li><asp:LinkButton ID="lbHome" runat="server" OnClick="GoHome">Home</asp:LinkButton></li>
+                        <li><asp:LinkButton ID="lbAbout" runat="server" OnClick="GoAbout">About Us</asp:LinkButton></li>
+                        <li><asp:LinkButton ID="lbMarketplace" runat="server" OnClick="GoMarketplace">Marketplace</asp:LinkButton></li>
+                        <li><asp:LinkButton ID="lbChat" runat="server" OnClick="GoChat">Chat</asp:LinkButton></li>
+                        <li><asp:LinkButton ID="lbLivestream" runat="server" OnClick="GoLivestream">Livestream</asp:LinkButton></li>
+                        <li><asp:LinkButton ID="lbTournaments" runat="server" OnClick="GoTournaments">Tournaments</asp:LinkButton></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><asp:LinkButton ID="lbProfile" runat="server" OnClick="GoProfile">Profile</asp:LinkButton></li>
                     </ul>
                 </div>
             </div>
@@ -62,10 +68,44 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+                <p>&copy; <%: DateTime.Now.Year %> - FSU Tournament Hub</p>
             </footer>
         </div>
+                <div id="versionMask"  style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: rgba(0,0,0,0.7); z-index: 999; display: none;"></div>
+                <div id="userLogin" class="popup" style="padding: 0px 15px 15px 15px;">
+                    <div class="center">
+                        <h2>Hi! Login to access our features!</h2>
+                        Username: 
+                <input type="text" class="form-control" id="username" style="display: inline-block;" />
+                        <br />
+                        Password: 
+                <input type="password" class="form-control" id="password" style="display: inline-block;" />
+                        <br />
+                        <br />
+                        <p>Don't have an account? <a>Register here!</a></p>
+                        <div class="btn btn-primary" id="btnLogin">Login</div>
+                    </div>
+                </div>
+        <script type="text/javascript">
+            function login() {
+                $("#userLogin").center();
+                $("#userLogin").fadeIn();
+                $("#versionMask").fadeIn();
+            }
+            $(document).ready(function () {
+                $("#btnLogin").click(function () {
+                    $("#userLogin").fadeOut();
+                    $("#versionMask").fadeOut();
+                });
+            });
 
+            jQuery.fn.center = function () {
+                this.css("position", "fixed");
+                this.css("top", Math.max(0, ((($(window).height() - $(this).outerHeight() - 100) / 2))) + "px");
+                this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2)) + "px");
+                return this;
+            }
+        </script>
     </form>
 </body>
 </html>

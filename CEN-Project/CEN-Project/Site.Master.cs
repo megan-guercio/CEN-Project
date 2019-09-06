@@ -13,5 +13,46 @@ namespace CEN_Project
         {
 
         }
+
+        protected void LoginPopup()
+        {
+            Page.ClientScript.RegisterStartupScript(GetType(), "LoginBox", "<script type='text/javascript'>login()</script>");
+            return;
+        }
+
+        protected void GoHome(object sender, EventArgs e)
+        {
+
+        }
+        
+        protected void GoAbout(object sender, EventArgs e)
+        {
+            LoginPopup();
+        }
+
+        protected void GoLivestream(object sender, EventArgs e)
+        {
+            LoginPopup();
+        }
+
+        protected void GoMarketplace(object sender, EventArgs e)
+        {
+            LoginPopup();
+        }
+
+        protected void GoTournaments(object sender, EventArgs e)
+        {
+            LoginPopup();
+        }
+
+        protected void GoProfile(object sender, EventArgs e)
+        {
+            LoginPopup();
+        }
+
+        protected void GoChat(object sender, EventArgs e)
+        {
+            LoginPopup();
+        }
     }
 }

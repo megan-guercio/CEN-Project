@@ -7,22 +7,74 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CEN_Project
-{
-
-
-    public partial class SiteMaster
-    {
-
+namespace CEN_Project {
+    
+    
+    public partial class SiteMaster {
+        
         /// <summary>
-        /// HeadContent control.
+        /// lbHome control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
-
+        protected global::System.Web.UI.WebControls.LinkButton lbHome;
+        
+        /// <summary>
+        /// lbAbout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbAbout;
+        
+        /// <summary>
+        /// lbMarketplace control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbMarketplace;
+        
+        /// <summary>
+        /// lbChat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbChat;
+        
+        /// <summary>
+        /// lbLivestream control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbLivestream;
+        
+        /// <summary>
+        /// lbTournaments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbTournaments;
+        
+        /// <summary>
+        /// lbProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbProfile;
+        
         /// <summary>
         /// MainContent control.
         /// </summary>

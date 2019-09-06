@@ -4323,11 +4323,21 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-nav {
   margin: 7.5px -15px;
 }
+
 .navbar-nav > li > a {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  line-height: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 20px;
 }
+
+.navbar-nav navbar-right > li {
+    float: right;
+}
+
+.navbar-nav navbar-right > li > a {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
 @media (max-width: 767px) {
   .navbar-nav .open .dropdown-menu {
     position: static;
@@ -4360,6 +4370,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     float: left;
   }
   .navbar-nav > li > a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  .navbar-nav navbar-right > li {
+    float: right;
+  }
+
+  .navbar-nav navbar-right > li > a {
     padding-top: 15px;
     padding-bottom: 15px;
   }
@@ -5867,16 +5885,16 @@ button.close {
   overflow: hidden;
 }
 .modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  display: none;
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch;
-  outline: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
 }
 .modal.fade .modal-dialog {
   -webkit-transition: -webkit-transform .3s ease-out;
@@ -5943,8 +5961,8 @@ button.close {
   line-height: 1.42857143;
 }
 .modal-body {
-  position: relative;
-  padding: 15px;
+    position: relative;
+    padding: 15px;
 }
 .modal-footer {
   padding: 15px;
