@@ -48,19 +48,19 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a id="lbAbout" onclick="javascript:login(this)" runat="server">About Us</a></li>
+                            <a id="lbAbout" href="About.aspx" runat="server">About Us</a></li>
                         <li>
-                            <a id="lbMarketplace" onclick="javascript:login(this)" runat="server">Marketplace</a></li>
+                            <a id="lbMarketplace" href="Marketplace.aspx" runat="server">Marketplace</a></li>
                         <li>
-                            <a id="lbChat" onclick="javascript:login(this)" runat="server">Chat</a></li>
+                            <a id="lbChat" href="Chat.aspx" runat="server">Chat</a></li>
                         <li>
-                            <a id="lbLivestream" onclick="javascript:login(this)" runat="server">Livestream</a></li>
+                            <a id="lbLivestream" href="Livestream.aspx" runat="server">Livestream</a></li>
                         <li>
-                            <a id="lbTournaments" onclick="javascript:login(this)" runat="server">Tournaments</a></li>
+                            <a id="lbTournaments" href="Tournaments.aspx" runat="server">Tournaments</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a id="lbProfile" runat="server" onclick="javascript:login(this)">Profile</a></li>
+                            <a id="lbProfile" runat="server" href="Profile.aspx">Profile</a></li>
                     </ul>
                 </div>
             </div>
@@ -116,32 +116,10 @@
             </div>
         </div>
         <script type="text/javascript">
-            function login(event) {
-                var id = event.id;
+            function login() {
                 
                 if ($("#userRegister").css('display') != "none") {
                     $("#userRegister").fadeOut();
-                }
-
-                if (sessionStorage.getItem('status') != null) {
-                    var url = window.location;
-                    var baseurl = url.protocol + "//" + url.host + "/";
-                    console.log(baseurl);
-                    if (id == "lbAbout")
-                        window.location.href = baseurl + "About.aspx";
-                    else if (id == "lbMarketplace")
-                        window.location.href = baseurl + "Marketplace.aspx";
-                    else if (id == "lbChat")
-                        window.location.href = baseurl + "Chat.aspx";
-                    else if (id == "lbLivestream")
-                        window.location.href = baseurl + "Livestream.aspx";
-                    else if (id == "lbTournaments")
-                        window.location.href = baseurl + "Tournaments.aspx";
-                    else if (id == "lbProfile")
-                        window.location.href = baseurl + "Profile.aspx";
-                    else
-                        window.location.href = baseurl;
-                    return;
                 }
 
                 $("#userLogin").center();
