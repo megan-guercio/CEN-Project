@@ -6,15 +6,12 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
-
+    <title><%: Page.Title %></title>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
-
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
 </head>
 <body onresize="resize()">
     <form runat="server">
@@ -51,21 +48,19 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>
-                            <asp:LinkButton ID="lbHome" runat="server" OnClick="GoHome">Home</asp:LinkButton></li>
+                            <a id="lbAbout" onclick="javascript:login(this)" runat="server">About Us</a></li>
                         <li>
-                            <asp:LinkButton ID="lbAbout" runat="server" OnClick="GoAbout">About Us</asp:LinkButton></li>
+                            <a id="lbMarketplace" onclick="javascript:login(this)" runat="server">Marketplace</a></li>
                         <li>
-                            <asp:LinkButton ID="lbMarketplace" runat="server" OnClick="GoMarketplace">Marketplace</asp:LinkButton></li>
+                            <a id="lbChat" onclick="javascript:login(this)" runat="server">Chat</a></li>
                         <li>
-                            <asp:LinkButton ID="lbChat" runat="server" OnClick="GoChat">Chat</asp:LinkButton></li>
+                            <a id="lbLivestream" onclick="javascript:login(this)" runat="server">Livestream</a></li>
                         <li>
-                            <asp:LinkButton ID="lbLivestream" runat="server" OnClick="GoLivestream">Livestream</asp:LinkButton></li>
-                        <li>
-                            <asp:LinkButton ID="lbTournaments" runat="server" OnClick="GoTournaments">Tournaments</asp:LinkButton></li>
+                            <a id="lbTournaments" onclick="javascript:login(this)" runat="server">Tournaments</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <asp:LinkButton ID="lbProfile" runat="server" OnClick="GoProfile">Profile</asp:LinkButton></li>
+                            <a id="lbProfile" runat="server" onclick="javascript:login(this)">Profile</a></li>
                     </ul>
                 </div>
             </div>
@@ -82,32 +77,100 @@
         <div id="userLogin" class="popup" style="padding: 0px 15px 15px 15px;">
             <div class="center">
                 <h2>Hi! Login to access our features!</h2>
-                Username: 
-                <input type="text" class="form-control" id="username" style="display: inline-block;" />
+                <b>Username: </b>
+                <asp:TextBox ID="UserName" runat="server" CssClass="form-control" Style="display: inline-block"></asp:TextBox>
                 <br />
-                Password: 
-                <input type="password" class="form-control" id="password" style="display: inline-block;" />
+                <b>Password: </b>
+                <asp:TextBox ID="Password" TextMode="Password" runat="server" CssClass="form-control" Style="display: inline-block"></asp:TextBox>
                 <br />
                 <br />
-                <p>Don't have an account? <a>Register here!</a></p>
-                <div class="btn btn-primary" id="btnLogin">Login</div>
+                <p>
+                    Don't have an account?
+                            <a id="lbRegister" runat="server" style="cursor: pointer" onclick="javascript:register()">Register here!</a>
+                </p>
+                <asp:Button ID="btnLogin" OnClick="LogIn" OnClientClick="loggedin()" runat="server" Style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Login" />
+            </div>
+        </div>
+        <div id="userRegister" class="popup" style="padding: 0px 15px 15px 15px;">
+            <div class="center">
+                <h2>So you want to register?</h2>
+                <br />
+                <b>Full Name: </b>
+                <input type="text" class="form-control" id="txtName" style="display: inline-block;" />
+                <br />
+                <b>FSU Email: </b>
+                <input type="text" class="form-control" id="txtEmail" style="display: inline-block;" />
+                <br />
+                <b>Username: </b>
+                <input type="text" class="form-control" id="txtUsername" style="display: inline-block;" />
+                <br />
+                <b>Password: </b>
+                <input type="password" class="form-control" id="txtPassword" style="display: inline-block;" />
+                <br />
+                <br />
+                <p>
+                    Already have an account?
+                            <a id="lbLogin" runat="server" style="cursor: pointer" onclick="javascript:login(this);">Login here!</a>
+                </p>
+                <asp:Button ID="btnRegister" OnClick="CreateNewUser" OnClientClick="registered()" runat="server" style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Register"/>
             </div>
         </div>
         <script type="text/javascript">
-            function login() {
+            function login(event) {
+                var id = event.id;
+                
+                if ($("#userRegister").css('display') != "none") {
+                    $("#userRegister").fadeOut();
+                }
+
+                if (sessionStorage.getItem('status') != null) {
+                    var url = window.location;
+                    var baseurl = url.protocol + "//" + url.host + "/";
+                    console.log(baseurl);
+                    if (id == "lbAbout")
+                        window.location.href = baseurl + "About.aspx";
+                    else if (id == "lbMarketplace")
+                        window.location.href = baseurl + "Marketplace.aspx";
+                    else if (id == "lbChat")
+                        window.location.href = baseurl + "Chat.aspx";
+                    else if (id == "lbLivestream")
+                        window.location.href = baseurl + "Livestream.aspx";
+                    else if (id == "lbTournaments")
+                        window.location.href = baseurl + "Tournaments.aspx";
+                    else if (id == "lbProfile")
+                        window.location.href = baseurl + "Profile.aspx";
+                    else
+                        window.location.href = baseurl;
+                    return;
+                }
+
                 $("#userLogin").center();
                 $("#userLogin").fadeIn();
-                $("#versionMask").fadeIn();
             }
-            $(document).ready(function () {
-                $("#btnLogin").click(function () {
-                    $("#userLogin").fadeOut();
-                    $("#versionMask").fadeOut();
-                });
-            });
+
+            function register() {
+                $("#userLogin").fadeOut();
+                $("#userRegister").center();
+                $("#userRegister").fadeIn();
+            }
+
+            function loggedin() {
+                $("#userLogin").fadeOut();
+                $("#versionMask").fadeOut();
+            }
+
+            function registered() {
+                $("#userRegister").fadeOut();
+                $("#versionMask").fadeOut();
+            }
 
             function resize() {
-                $("#userLogin").center();
+                if ($("#userRegister").css('display') != "none") {
+                    $("#userRegister").center();
+                }
+                if ($("#userLogin").css('display') != "none") {
+                    $("#userLogin").center();
+                }
             }
 
             jQuery.fn.center = function () {

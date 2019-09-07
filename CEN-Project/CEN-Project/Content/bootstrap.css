@@ -4328,6 +4328,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     padding-top: 10px;
     padding-bottom: 10px;
     line-height: 20px;
+    cursor:pointer;
 }
 
 .navbar-nav navbar-right > li {
@@ -4337,6 +4338,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-nav navbar-right > li > a {
         padding-top: 15px;
         padding-bottom: 15px;
+        cursor:pointer;
     }
 @media (max-width: 767px) {
   .navbar-nav .open .dropdown-menu {

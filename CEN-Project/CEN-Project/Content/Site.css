@@ -45,6 +45,7 @@ textarea {
 
 .center {
     text-align: center;
+    margin: auto;
 }
 
 .form-control {
