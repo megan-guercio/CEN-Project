@@ -39,7 +39,7 @@ textarea {
     max-width: 500px;
     background: #f5f5f5;
     z-index: 9999;
-    box-shadow: 1px 1px 50px 1px darkslategrey;
+    box-shadow: 1px 1px 50px 1px #212121;
     display: none;
 }
 

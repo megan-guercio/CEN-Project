@@ -17,7 +17,11 @@ namespace CEN_Project
             if (Request.Url.LocalPath == "/default.aspx") return;
             else if (Page.Request.Form.ToString().Contains("btnLogin=Login")) return;
             else if (Page.Request.Form.ToString().Contains("btnRegister=Register")) return;
-            else if (Convert.ToBoolean(Session["loggedIn"])) return;
+            else if (Convert.ToBoolean(Session["loggedIn"]))
+            {
+                lbProfile.Style["display"] = "inline-block";
+                return;
+            }
 
             Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>login()</script>");
         }
@@ -25,11 +29,13 @@ namespace CEN_Project
         protected void CreateNewUser(object sender, EventArgs e)
         {
             Session["loggedIn"] = true;
+            lbProfile.Style["display"] = "inline-block";
         }
 
         protected void LogIn(object sender, EventArgs e)
         {
             Session["loggedIn"] = true;
+            lbProfile.Style["display"] = "inline-block";
         }
     }
 }
