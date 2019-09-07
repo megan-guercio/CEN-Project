@@ -14,14 +14,15 @@ namespace CEN_Project
         protected void Page_Load(object sender, EventArgs e)
         {
             //better way of doing this?
-            if (Request.Url.LocalPath == "/default.aspx") return;
-            else if (Page.Request.Form.ToString().Contains("btnLogin=Login")) return;
-            else if (Page.Request.Form.ToString().Contains("btnRegister=Register")) return;
-            else if (Convert.ToBoolean(Session["loggedIn"]))
+            if (Convert.ToBoolean(Session["loggedIn"]))
             {
                 lbProfile.Style["display"] = "inline-block";
                 return;
             }
+            else if (Request.Url.LocalPath == "/default.aspx") return;
+            else if (Page.Request.Form.ToString().Contains("btnLogin=Login")) return;
+            else if (Page.Request.Form.ToString().Contains("btnRegister=Register")) return;
+            
 
             Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>login()</script>");
         }
