@@ -19,7 +19,7 @@ namespace CEN_Project
                 lbProfile.Style["display"] = "inline-block";
                 return;
             }
-            else if (Request.Url.LocalPath == "/default.aspx") return;
+            else if (Request.Url.LocalPath == "/default.aspx" || Request.Url.LocalPath == "/About") return;
             else if (Page.Request.Form.ToString().Contains("btnLogin=Login")) return;
             else if (Page.Request.Form.ToString().Contains("btnRegister=Register")) return;
             
