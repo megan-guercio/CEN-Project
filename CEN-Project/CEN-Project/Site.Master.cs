@@ -38,18 +38,16 @@ namespace CEN_Project
         protected void LogIn(object sender, EventArgs e)
         {
             lbProfile.Style["display"] = "inline-block";
-            System.Threading.Tasks.Task.Run(async () => await VerifyLogIn());
-        }
-
-        protected async System.Threading.Tasks.Task VerifyLogIn()
-        {
             lbProfile.Style["display"] = "inline-block";
+            
             var defaultApp = FirebaseApp.Create(new AppOptions()
             {
-                Credential = GoogleCredential.FromFile(Server.MapPath("~") + @"\Scripts\cen-project-d757f-firebase-adminsdk-k6z2f-53b4c90b47.json")
+                Credential = GoogleCredential.FromFile(Server.MapPath("~") + @"Scripts\cen-project-d757f-firebase-adminsdk-k6z2f-53b4c90b47.json")
             });
             var auth = FirebaseAdmin.Auth.FirebaseAuth.GetAuth(defaultApp);
-            Session["curUser"] = await auth.GetUserByEmailAsync(UserName.Text);
+            Session["curUser"] = auth.GetUserByEmailAsync(UserName.Text).Result;
+            Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>console.log('" + Session["curUser"] + "');</script>");
         }
+
     }
 }
