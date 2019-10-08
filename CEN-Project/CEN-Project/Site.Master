@@ -14,7 +14,34 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 <body onresize="resize()">
+
     <form runat="server">
+                <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCiy1myPfTYMl3tRAHKWYqfo63myNN_b4k",
+    authDomain: "cen-project-d757f.firebaseapp.com",
+    databaseURL: "https://cen-project-d757f.firebaseio.com",
+    projectId: "cen-project-d757f",
+    storageBucket: "cen-project-d757f.appspot.com",
+    messagingSenderId: "1066876393705",
+    appId: "1:1066876393705:web:67a1fc41e4b07555a93878",
+    measurementId: "G-4YHEDEJGBC"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    firebase.auth();
+</script>
         <asp:ScriptManager runat="server">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
@@ -34,7 +61,7 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
-
+        <asp:HiddenField runat="server" ID="authToken" Value="" />
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -77,7 +104,7 @@
         <div id="userLogin" class="popup" style="padding: 0px 15px 15px 15px;">
             <div class="center">
                 <h2>Hi! Login to access our features!</h2>
-                <b>Username: </b>
+                <b>FSU Email: </b>
                 <asp:TextBox ID="UserName" runat="server" CssClass="form-control" Style="display: inline-block"></asp:TextBox>
                 <br />
                 <b>Password: </b>
@@ -86,9 +113,9 @@
                 <br />
                 <p>
                     Don't have an account?
-                            <a id="lbRegister" runat="server" style="cursor: pointer" onclick="javascript:register()">Register here!</a>
+                            <a id="lbRegister" runat="server" style="cursor: pointer" onclick="javascript:registerPopUp()">Register here!</a>
                 </p>
-                <asp:Button ID="btnLogin" OnClick="LogIn" OnClientClick="loggedin()" runat="server" Style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Login" />
+                <asp:Button ID="btnLogin" OnClick="LogIn" OnClientClick="return logThemIn();" runat="server" Style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Login" />
             </div>
         </div>
         <div id="userRegister" class="popup" style="padding: 0px 15px 15px 15px;">
@@ -101,23 +128,19 @@
                 <b>FSU Email: </b>
                 <input type="text" class="form-control" id="txtEmail" style="display: inline-block;" />
                 <br />
-                <b>Username: </b>
-                <input type="text" class="form-control" id="txtUsername" style="display: inline-block;" />
-                <br />
                 <b>Password: </b>
                 <input type="password" class="form-control" id="txtPassword" style="display: inline-block;" />
                 <br />
                 <br />
                 <p>
                     Already have an account?
-                            <a id="lbLogin" runat="server" style="cursor: pointer" onclick="javascript:login(this);">Login here!</a>
+                            <a id="lbLogin" runat="server" style="cursor: pointer" onclick="javascript:loginPopUp(this);">Login here!</a>
                 </p>
-                <asp:Button ID="btnRegister" OnClick="CreateNewUser" OnClientClick="registered()" runat="server" style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Register"/>
+                <asp:Button ID="btnRegister" OnClick="CreateNewUser" OnClientClick="return registerThem();" runat="server" style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Register"/>
             </div>
         </div>
-        <script type="text/javascript">
-            function login() {
-                
+        <script>
+            function loginPopUp() {
                 if ($("#userRegister").css('display') != "none") {
                     $("#userRegister").fadeOut();
                 }
@@ -127,20 +150,54 @@
                 $("#versionMask").fadeIn();
             }
 
-            function register() {
+            function registerPopUp() {
                 $("#userLogin").fadeOut();
                 $("#userRegister").center();
                 $("#userRegister").fadeIn();
             }
 
-            function loggedin() {
-                $("#userLogin").fadeOut();
-                $("#versionMask").fadeOut();
+            function verifyLogin() {
+                firebase.auth().signOut(); //just for testing sign-in;
+
+                firebase.auth().signInWithEmailAndPassword($("#UserName").val(), $("#Password").val()).catch(function (error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.log(errorCode);
+                    console.log(errorMessage);
+                });
             }
 
-            function registered() {
-                $("#userRegister").fadeOut();
-                $("#versionMask").fadeOut();
+            function createLogin() {
+                firebase.auth().signOut();
+
+                firebase.auth().createUserWithEmailAndPassword($("#txtEmail").val(), $("#txtPassword").val()).catch(function (error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.log(errorCode);
+                   console.log(errorMessage);
+                   return false;
+                });
+            }
+
+            function logThemIn() {
+
+                verifyLogin();
+                if (firebase.auth().currentUser) {
+                    $("#userLogin").fadeOut();
+                    $("#versionMask").fadeOut();
+                    return true;
+                }
+                else return false;
+            }
+
+            function registerThem() {
+                createLogin();
+                if (firebase.auth().currentUser) {
+                    $("#userRegister").fadeOut();
+                    $("#versionMask").fadeOut();
+                    return true;
+                }
+                else return false;
             }
 
             function resize() {
