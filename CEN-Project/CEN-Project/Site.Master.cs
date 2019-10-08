@@ -46,7 +46,7 @@ namespace CEN_Project
             lbProfile.Style["display"] = "inline-block";
             var defaultApp = FirebaseApp.Create(new AppOptions()
             {
-                Credential = GoogleCredential.FromFile(Server.MapPath("~") + @"\Scripts\cen-project-d757f-firebase-adminsdk-k6z2f-3a1bdfe3c4.json")
+                Credential = GoogleCredential.FromFile(Server.MapPath("~") + @"\Scripts\cen-project-d757f-firebase-adminsdk-k6z2f-53b4c90b47.json")
             });
             var auth = FirebaseAdmin.Auth.FirebaseAuth.GetAuth(defaultApp);
             Session["curUser"] = await auth.GetUserByEmailAsync(UserName.Text);
