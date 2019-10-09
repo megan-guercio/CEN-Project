@@ -18,6 +18,8 @@ namespace CEN_Project
 {
     public partial class SiteMaster : MasterPage
     {
+        private FirebaseApp defaultApp;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //better way of doing this?
@@ -31,23 +33,25 @@ namespace CEN_Project
             else if (Page.Request.Form.ToString().Contains("btnRegister=Register")) return;
             if (Session["curUser"] == null) Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>loginPopUp()</script>");
         }
-        protected void CreateNewUser(object sender, EventArgs e)
-        {
-            lbProfile.Style["display"] = "inline-block";
-        }
 
         protected void LogIn(object sender, EventArgs e)
         {
             lbProfile.Style["display"] = "inline-block";
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Server.MapPath("~") + @"Scripts\cen-project-d757f-firebase-adminsdk-k6z2f-53b4c90b47.json");
 
-            var defaultApp = FirebaseApp.Create(new AppOptions()
+            if (defaultApp == null)
             {
-                Credential = GoogleCredential.GetApplicationDefault()
-            });
+                defaultApp = FirebaseApp.Create(new AppOptions()
+                {
+                    Credential = GoogleCredential.GetApplicationDefault()
+                });
+            }
 
             var auth = FirebaseAdmin.Auth.FirebaseAuth.GetAuth(defaultApp);
-            Session["curUser"] = auth.GetUserByEmailAsync(UserName.Text).Result;
+            Session["curUser"] = null;
+            try { Session["curUser"] = auth.GetUserByEmailAsync(UserName.Text).Result; }
+            catch { }
+
             Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>console.log('" + Session["curUser"] + "');</script>");
 
             if (Session["curUser"] == null) return;
@@ -67,8 +71,8 @@ namespace CEN_Project
             {
                 {"userName", x.Email.Substring(0, x.Email.IndexOf('@')) }
             };
-            var d = docref.SetAsync(user).Result;
 
+            _ = docref.SetAsync(user).Result;
         }
     }
 }
