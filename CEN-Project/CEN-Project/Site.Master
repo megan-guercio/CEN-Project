@@ -126,7 +126,7 @@
                 <input type="text" class="form-control" id="txtName" style="display: inline-block;" />
                 <br />
                 <b>FSU Email: </b>
-                <input type="text" class="form-control" id="txtEmail" style="display: inline-block;" />
+                <input type="text" class="form-control" id="txtEmail" onchange="emailCheck()" style="display: inline-block;" />
                 <br />
                 <b>Password: </b>
                 <input type="password" class="form-control" id="txtPassword" style="display: inline-block;" />
@@ -137,6 +137,7 @@
                             <a id="lbLogin" runat="server" style="cursor: pointer" onclick="javascript:loginPopUp(this);">Login here!</a>
                 </p>
                 <asp:Button ID="btnRegister" OnClick="CreateNewUser" OnClientClick="return registerThem();" runat="server" style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Register"/>
+                <br /><p id="errorNonFSU" runat="server" style="display:none;color:red">Sorry! You must be an FSU student or faculty to sign up!</p>
             </div>
         </div>
         <script>
@@ -167,9 +168,21 @@
                 });
             }
 
+            function emailCheck() {
+                if ($("#txtEmail").val().toLowerCase().indexOf("fsu.edu") < 0) {
+                    $("#errorNonFSU").css('display', 'inline-block');
+                    return;
+                }
+                $("#errorNonFSU").css('display', 'none');
+            }
+
             function createLogin() {
                 firebase.auth().signOut();
-
+                if ($("#txtEmail").val().toLowerCase().indexOf("fsu.edu") < 0) {
+                    $("#errorNonFSU").css('display', 'inline-block');
+                    return;
+                }
+                $("#errorNonFSU").css('display', 'none');
                 firebase.auth().createUserWithEmailAndPassword($("#txtEmail").val(), $("#txtPassword").val()).catch(function (error) {
                     var errorCode = error.code;
                     var errorMessage = error.message;
@@ -192,6 +205,7 @@
 
             function registerThem() {
                 createLogin();
+                console.log(firebase.auth().currentUser);
                 if (firebase.auth().currentUser) {
                     $("#userRegister").fadeOut();
                     $("#versionMask").fadeOut();
