@@ -7,11 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CEN_Project {
-    
-    
-    public partial class SiteMaster {
-        
+namespace CEN_Project
+{
+
+
+    public partial class SiteMaster
+    {
+
+        /// <summary>
+        /// head control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+
         /// <summary>
         /// authToken control.
         /// </summary>
@@ -20,7 +31,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField authToken;
-        
+
         /// <summary>
         /// lbAbout control.
         /// </summary>
@@ -29,7 +40,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lbAbout;
-        
+
         /// <summary>
         /// lbMarketplace control.
         /// </summary>
@@ -38,7 +49,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lbMarketplace;
-        
+
         /// <summary>
         /// lbChat control.
         /// </summary>
@@ -47,7 +58,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lbChat;
-        
+
         /// <summary>
         /// lbLivestream control.
         /// </summary>
@@ -56,7 +67,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lbLivestream;
-        
+
         /// <summary>
         /// lbTournaments control.
         /// </summary>
@@ -65,7 +76,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lbTournaments;
-        
+
         /// <summary>
         /// lbProfile control.
         /// </summary>
@@ -74,7 +85,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lbProfile;
-        
+
         /// <summary>
         /// MainContent control.
         /// </summary>
@@ -83,7 +94,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
-        
+
         /// <summary>
         /// UserName control.
         /// </summary>
@@ -92,7 +103,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox UserName;
-        
+
         /// <summary>
         /// Password control.
         /// </summary>
@@ -101,7 +112,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Password;
-        
+
         /// <summary>
         /// lbRegister control.
         /// </summary>
@@ -110,7 +121,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lbRegister;
-        
+
         /// <summary>
         /// btnLogin control.
         /// </summary>
@@ -119,7 +130,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnLogin;
-        
+
         /// <summary>
         /// lbLogin control.
         /// </summary>
@@ -128,7 +139,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor lbLogin;
-        
+
         /// <summary>
         /// btnRegister control.
         /// </summary>
@@ -137,7 +148,7 @@ namespace CEN_Project {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnRegister;
-        
+
         /// <summary>
         /// errorNonFSU control.
         /// </summary>
