@@ -72,18 +72,23 @@ namespace CEN_Project
             var x = chatRef.OrderByDescending("milliseconds");
             QuerySnapshot qs = x.GetSnapshotAsync().Result;
             StringBuilder s = new StringBuilder();
+            int i = 1;
             foreach(DocumentSnapshot snapshot in qs.Documents)
             {
+                s.AppendLine("<div id=\"thread" + i.ToString() + "\" runat=\"server\" class=\"box\"><p>");
                 s.AppendLine("Thread ID: " + snapshot.Id);
                 s.AppendLine("<br/>");
                 s.AppendLine("Posted by user: " + snapshot.GetValue<string>("postedBy"));
                 s.AppendLine("<br/>");
-                s.AppendLine("Posted at: " + (new DateTime(1970, 1, 1)).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
+                s.AppendLine("Posted at: " + new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
                 s.AppendLine("<br/>");
                 s.AppendLine("Title of thread: " + snapshot.GetValue<string>("title"));
                 s.AppendLine("<br/>");
                 s.AppendLine("Initial thread message: " + snapshot.GetValue<string>("message"));
+                s.AppendLine("</p></div>");
                 s.AppendLine("<br/><br/>");
+
+                i++;
             }
 
             threadList.InnerHtml = s.ToString();

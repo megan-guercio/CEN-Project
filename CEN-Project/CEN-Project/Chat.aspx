@@ -1,10 +1,12 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Chat.aspx.cs" Inherits="CEN_Project.Chat" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <div id="container" class="container body-content">
+
+    
     <br />
-    <input id="btnStartThread" type="button" class="btn btn-primary" value="Start Thread"onclick="startThreadPopUp()" />
-    <br /><br />
-    <p id="threadList" runat="server"></p>
+    <input id="btnStartThread" type="button" style="float:left; margin-right:50px" class="btn btn-primary" value="Start Thread" onclick="startThreadPopUp()" />
+    <div id="threadList" style="float:left" runat="server"></div>
     <br />
     <div id="emptyThread" class="popup" style="padding: 0px 15px 15px 15px;">
         <div class="center">
@@ -19,7 +21,7 @@
                 <asp:Button ID="btnPostThread" OnClick="btnPostThread_Click" OnClientClick="if(startThreadHide()) return true;" runat="server" style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Post Thread"/>
             </div>
         </div>
-
+    </div>
      <script>
             function startThreadPopUp() {
                 $("#emptyThread").center();

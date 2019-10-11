@@ -45,12 +45,12 @@ textarea {
 
 .box {
     font-family: 'Lato', sans-serif;
-    box-shadow: 1px 1px 50px 1px #212121;
+    box-shadow: 1px 1px 10px 1px #212121;
     background: #f5f5f5;
     min-height: 200px;
     min-width: 500px;
-    float:right;
-    top:0;
+    border-radius:4px;
+    padding:10px;
 }
 
 .center {
