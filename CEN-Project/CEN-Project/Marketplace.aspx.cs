@@ -14,5 +14,11 @@ namespace CEN_Project
         {
 
         }
+
+        //Please don't remove
+        protected void Page_LoadComplete(object sender, EventArgs e)
+        {
+            if (Session["curUser"] == null) Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>loginPopUp()</script>");
+        }
     }
 }

@@ -31,11 +31,11 @@ namespace CEN_Project
             else if (Request.Url.LocalPath.ToLower().Contains("default") || Request.Url.LocalPath.ToLower().Contains("about")) return;
             else if (Page.Request.Form.ToString().Contains("btnLogin=Login")) return;
             else if (Page.Request.Form.ToString().Contains("btnRegister=Register")) return;
-            if (Session["curUser"] == null) Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>loginPopUp()</script>");
         }
 
         protected void LogIn(object sender, EventArgs e)
         {
+            if (Session["curUser"] != null) return;
             lbProfile.Style["display"] = "inline-block";
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Server.MapPath("~") + @"Scripts\cen-project-d757f-firebase-adminsdk-k6z2f-53b4c90b47.json");
 

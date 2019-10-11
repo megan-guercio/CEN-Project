@@ -30,6 +30,7 @@ namespace CEN_Project
 
         protected void Page_LoadComplete(object sender, EventArgs e)
         {
+            if (Session["curUser"] == null) Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>loginPopUp()</script>");
             GetThreads();
         }
 
