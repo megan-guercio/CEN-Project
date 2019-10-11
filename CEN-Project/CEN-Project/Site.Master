@@ -115,7 +115,7 @@
                     Don't have an account?
                             <a id="lbRegister" runat="server" style="cursor: pointer" onclick="javascript:registerPopUp()">Register here!</a>
                 </p>
-                <asp:Button ID="btnLogin" OnClick="LogIn" OnClientClick="return logThemIn();" runat="server" Style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Login" />
+                <asp:Button ID="btnLogin" OnClick="LogIn" OnClientClick="if(!logThemIn()) return false;" runat="server" Style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Login" />
             </div>
         </div>
         <div id="userRegister" class="popup" style="padding: 0px 15px 15px 15px;">
@@ -126,7 +126,7 @@
                 <input type="text" class="form-control" id="txtName" style="display: inline-block;" />
                 <br />
                 <b>FSU Email: </b>
-                <input type="text" class="form-control" id="txtEmail" onchange="emailCheck()" style="display: inline-block;" />
+                <input type="text" runat="server" class="form-control" id="txtEmail" onchange="emailCheck()" style="display: inline-block;" />
                 <br />
                 <b>Password: </b>
                 <input type="password" class="form-control" id="txtPassword" style="display: inline-block;" />
@@ -136,7 +136,7 @@
                     Already have an account?
                             <a id="lbLogin" runat="server" style="cursor: pointer" onclick="javascript:loginPopUp(this);">Login here!</a>
                 </p>
-                <asp:Button ID="btnRegister" OnClick="CreateNewUser" OnClientClick="return registerThem();" runat="server" style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Register"/>
+                <asp:Button ID="btnRegister" OnClick="LogIn" OnClientClick="if(!registerThem()) return false;" runat="server" style="margin-bottom: 20px" CssClass="btn btn-primary" Text="Register"/>
                 <br /><p id="errorNonFSU" runat="server" style="display:none;color:red">Sorry! You must be an FSU student or faculty to sign up!</p>
             </div>
         </div>
@@ -193,7 +193,7 @@
             }
 
             function logThemIn() {
-
+                
                 verifyLogin();
                 if (firebase.auth().currentUser) {
                     $("#userLogin").fadeOut();
@@ -201,10 +201,13 @@
                     return true;
                 }
                 else return false;
+
+                return true;
             }
 
             function registerThem() {
                 createLogin();
+                $("#UserName").val($("#txtEmail").val());
                 console.log(firebase.auth().currentUser);
                 if (firebase.auth().currentUser) {
                     $("#userRegister").fadeOut();
@@ -212,6 +215,8 @@
                     return true;
                 }
                 else return false;
+
+                return true;
             }
 
             function resize() {
