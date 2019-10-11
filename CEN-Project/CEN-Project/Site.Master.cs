@@ -39,7 +39,8 @@ namespace CEN_Project
             lbProfile.Style["display"] = "inline-block";
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Server.MapPath("~") + @"Scripts\cen-project-d757f-firebase-adminsdk-k6z2f-53b4c90b47.json");
 
-            if (defaultApp == null)
+            
+            if (FirebaseApp.DefaultInstance == null)
             {
                 defaultApp = FirebaseApp.Create(new AppOptions()
                 {
@@ -47,6 +48,7 @@ namespace CEN_Project
                 });
             }
 
+            defaultApp = FirebaseApp.DefaultInstance;
             var auth = FirebaseAdmin.Auth.FirebaseAuth.GetAuth(defaultApp);
             Session["curUser"] = null;
             try { Session["curUser"] = auth.GetUserByEmailAsync(UserName.Text).Result; }
