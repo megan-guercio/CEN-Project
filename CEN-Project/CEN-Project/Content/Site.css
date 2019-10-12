@@ -46,11 +46,19 @@ textarea {
 .box {
     font-family: 'Lato', sans-serif;
     box-shadow: 1px 1px 10px 1px #212121;
-    background: #f5f5f5;
-    min-height: 200px;
-    min-width: 500px;
-    border-radius:4px;
-    padding:10px;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 1px 1px 10px 1px #212121;
+    background: #ffffff;
+    height: 200px;
+    width: 500px;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 500px;
+    max-height: 200px;
+    word-break: break-word;
+    overflow:hidden;
+    position:relative;
 }
 
 .center {
