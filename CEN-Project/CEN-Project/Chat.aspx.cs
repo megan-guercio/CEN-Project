@@ -76,7 +76,7 @@ namespace CEN_Project
             foreach(DocumentSnapshot snapshot in qs.Documents)
             {
                 s.AppendLine("<div id=\"thread" + i.ToString() + "\" runat=\"server\" class=\"box\">");
-                s.AppendLine("<div style=\"height:200px;width:500px;position:absolute;background:linear-gradient(to bottom, transparent 50%, white 90%);\"></div><h4 style=\"color: darkslategray;\">" + snapshot.GetValue<string>("title") + "</h4><p style=\"color:lightslategrey; text-overflow:clip\">");
+                s.AppendLine("<div style=\"height:100px;width:500px;bottom:0;position:absolute;background:linear-gradient(to bottom, transparent 0%, white 90%);\"></div><h4 style=\"color: darkslategray;\">" + snapshot.GetValue<string>("title") + "</h4><p style=\"color:lightslategrey; text-overflow:clip\">");
                 s.AppendLine("Posted by user: " + snapshot.GetValue<string>("postedBy"));
                 s.AppendLine(" at: " + new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
                 s.AppendLine("<br/><br/>");
