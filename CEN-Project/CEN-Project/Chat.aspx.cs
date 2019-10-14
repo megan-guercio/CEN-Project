@@ -25,13 +25,18 @@ namespace CEN_Project
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         protected void Page_LoadComplete(object sender, EventArgs e)
         {
             if (Session["curUser"] == null) Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>loginPopUp()</script>");
-            GetThreads();
+            Guid curThread = new Guid();
+
+            if (Request.QueryString["tid"] != null)
+                Guid.TryParse(Request.QueryString["tid"], out curThread);
+
+            GetThreads(curThread);
         }
 
         protected void btnPostThread_Click(object sender, EventArgs e)
@@ -58,16 +63,45 @@ namespace CEN_Project
                 {"title", @txtTitle.Text }
             };
             _ = docref.SetAsync(newThread).Result;
-            GetThreads();
+            GetThreads(new Guid());
         }
 
-        public void GetThreads()
+        private void GetThread(Guid curThread)
         {
             if (Session["curUser"] == null) return;
+            if (db == null) db = FirestoreDb.Create("cen-project-d757f");
+            if (chatRef == null) chatRef = db.Collection("chatThreads");
+            DocumentReference docref = db.Collection("chatThreads").Document(curThread.ToString());
+            DocumentSnapshot snapshot = docref.GetSnapshotAsync().Result;
+            var postedBy = snapshot.GetValue<string>("postedBy");
+            var datePosted = new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds"));
+            var message = snapshot.GetValue<string>("message");
+            var title = snapshot.GetValue<string>("title");
+            StringBuilder s = new StringBuilder();
+            s.AppendLine("<div id=\"thread1\" runat=\"server\" class=\"box\">");
+            s.AppendLine("<div style=\"height:100px;width:500px;bottom:0;position:absolute;background:linear-gradient(to bottom, transparent 0%, white 90%);\"></div><h4 style=\"color: darkslategray;\"><a href=\"Chat.aspx?tid=" + snapshot.Id + "\">" + snapshot.GetValue<string>("title") + "</a></h4><p style=\"color:lightslategrey; text-overflow:clip\">");
+            s.AppendLine("Posted by user: " + snapshot.GetValue<string>("postedBy"));
+            s.AppendLine(" at: " + new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
+            s.AppendLine("<br/><br/>");
+            s.AppendLine(snapshot.GetValue<string>("message"));
+            s.AppendLine("</p></div>");
+            s.AppendLine("<br/><br/>");
 
+            threadList.InnerHtml = s.ToString();
+        }
+
+        public void GetThreads(Guid curThread)
+        {
+            if (Session["curUser"] == null) return;
             user = (FirebaseAdmin.Auth.UserRecord)Session["curUser"];
             db = FirestoreDb.Create("cen-project-d757f");
             chatRef = db.Collection("chatThreads");
+
+            if (curThread != new Guid())
+            {
+                GetThread(curThread);
+                return;
+            }
 
             var x = chatRef.OrderByDescending("milliseconds");
             QuerySnapshot qs = x.GetSnapshotAsync().Result;
@@ -76,7 +110,7 @@ namespace CEN_Project
             foreach(DocumentSnapshot snapshot in qs.Documents)
             {
                 s.AppendLine("<div id=\"thread" + i.ToString() + "\" runat=\"server\" class=\"box\">");
-                s.AppendLine("<div style=\"height:100px;width:500px;bottom:0;position:absolute;background:linear-gradient(to bottom, transparent 0%, white 90%);\"></div><h4 style=\"color: darkslategray;\">" + snapshot.GetValue<string>("title") + "</h4><p style=\"color:lightslategrey; text-overflow:clip\">");
+                s.AppendLine("<div style=\"height:100px;width:500px;bottom:0;position:absolute;background:linear-gradient(to bottom, transparent 0%, white 90%);\"></div><h4 style=\"color: darkslategray;\"><a href=\"Chat.aspx?tid=" + snapshot.Id + "\">"+ snapshot.GetValue<string>("title") + "</a></h4><p style=\"color:lightslategrey; text-overflow:clip\">");
                 s.AppendLine("Posted by user: " + snapshot.GetValue<string>("postedBy"));
                 s.AppendLine(" at: " + new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
                 s.AppendLine("<br/><br/>");
