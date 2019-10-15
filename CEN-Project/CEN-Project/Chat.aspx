@@ -2,13 +2,12 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div id="container" class="container body-content">
-
     
     <br />
     <input id="btnStartThread" type="button" style="float:left; margin-right:50px" class="btn btn-primary" value="Start Thread" onclick="startThreadPopUp()" />
-    <div id="threadList" style="float:left;" runat="server">
-        <asp:PlaceHolder runat="server" ID="PlaceHolder1"></asp:PlaceHolder>
-    </div>
+        <div id="threadList" style="float: left;" runat="server">
+            <asp:PlaceHolder runat="server" ID="PlaceHolder1"></asp:PlaceHolder>
+        </div>
     <br />
     
     <div id="emptyThread" class="popup" style="padding: 0px 15px 15px 15px;">
@@ -38,10 +37,10 @@
          }
 
          function startReply() {
-             document.getElementById('imgReply').style.display = "none";
-             document.getElementById('pMessage').style.marginBottom = "215px";
-             document.getElementById('replyBox').style.display = "block";
-             document.getElementById('btnPostReply').style.display = "block";
+             document.getElementById('MainContent_imgReply').style.display = "none";
+             document.getElementById('MainContent_pMessage').style.marginBottom = "180px";
+             document.getElementById('MainContent_replyBox').style.display = "block";
+             document.getElementById('MainContent_btnPostReply').style.display = "block";
          }
          </script>
     

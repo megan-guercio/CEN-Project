@@ -22,20 +22,23 @@ namespace CEN_Project
         private FirestoreDb db;
         private CollectionReference chatRef;
         private FirebaseAdmin.Auth.UserRecord user;
+        private Guid curThread;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
         }
 
         protected void Page_LoadComplete(object sender, EventArgs e)
         {
             if (Session["curUser"] == null) Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>loginPopUp()</script>");
-            Guid curThread = new Guid();
+
+            //OnClick for btnPostReply
+            
 
             if (Request.QueryString["tid"] != null)
                 Guid.TryParse(Request.QueryString["tid"], out curThread);
 
+            if (Page.Request.Form.ToString().Contains("btnPostReply=Post+Reply")) PostReply(null, EventArgs.Empty);
             GetThreads(curThread);
         }
 
@@ -73,28 +76,122 @@ namespace CEN_Project
             if (chatRef == null) chatRef = db.Collection("chatThreads");
             DocumentReference docref = db.Collection("chatThreads").Document(curThread.ToString());
             DocumentSnapshot snapshot = docref.GetSnapshotAsync().Result;
-            StringBuilder s = new StringBuilder();
-            s.AppendLine("<div id=\"thread1\" runat=\"server\" class=\"thread\"><img id=\"imgReply\" onclick=\"startReply()\" src=\"Images/reply-arrow.png\" style=\"position: absolute; bottom: 10px; right: 10px; height: 20px;\">");
-            s.AppendLine("<h4 style=\"color: darkslategray;\"><a href=\"Chat.aspx?tid=" + snapshot.Id + "\">" + snapshot.GetValue<string>("title") + "</a></h4><p id=\"pMessage\" style=\"color:lightslategrey\">");
-            s.AppendLine("Posted by user: " + snapshot.GetValue<string>("postedBy"));
-            s.AppendLine(" at: " + new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
-            s.AppendLine("<br/><br/>");
-            s.AppendLine(@snapshot.GetValue<string>("message"));
-            s.AppendLine("<br/><br/></p><textarea id=\"replyBox\" name=\"replyBox\" rows=\"2\" cols=\"20\" class=\"reply\" runat=\"server\"></textarea></div>");
-            s.AppendLine("<br/><br/>");
 
-            threadList.InnerHtml = s.ToString();
+            System.Web.UI.HtmlControls.HtmlGenericControl divThread = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            divThread.ID = "thread1";
+            divThread.Attributes["runat"] = "server";
+            divThread.Attributes["class"] = "thread";
+
+            System.Web.UI.HtmlControls.HtmlGenericControl imgThread = new System.Web.UI.HtmlControls.HtmlGenericControl("img");
+            imgThread.ID = "imgReply";
+            imgThread.Attributes["onclick"] = "startReply()";
+            imgThread.Attributes["src"] = "Images/reply-arrow.png";
+            imgThread.Attributes["style"] = "position:absolute;bottom:10px;right:10px;height:20px;";
+
+            divThread.Controls.Add(imgThread);
+
+            System.Web.UI.HtmlControls.HtmlGenericControl h4Thread = new System.Web.UI.HtmlControls.HtmlGenericControl("h4");
+            h4Thread.Attributes["style"] = "color: darkslategray;";
+
+            System.Web.UI.HtmlControls.HtmlGenericControl aThread = new System.Web.UI.HtmlControls.HtmlGenericControl("a");
+            aThread.Attributes["href"] = "Chat.aspx?tid=" + snapshot.Id;
+            aThread.InnerText = snapshot.GetValue<string>("title");
+
+            h4Thread.Controls.Add(aThread);
+
+            divThread.Controls.Add(h4Thread);
+
+            System.Web.UI.HtmlControls.HtmlGenericControl pThread = new System.Web.UI.HtmlControls.HtmlGenericControl("p");
+            pThread.ID = "pMessage";
+            pThread.Attributes["style"] = "color: lightslategray";
+            pThread.InnerHtml = "Posted by user: " + snapshot.GetValue<string>("postedBy") + " at: " + 
+                new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString() + 
+                "<br/><br/>" + @snapshot.GetValue<string>("message") + "<br/><br/>";
+
+            divThread.Controls.Add(pThread);
+
+            System.Web.UI.HtmlControls.HtmlGenericControl textAreaThread = new System.Web.UI.HtmlControls.HtmlGenericControl("textarea");
+            textAreaThread.ID = "replyBox";
+            textAreaThread.Attributes["name"] = "replyBox";
+            textAreaThread.Attributes["rows"] = "2";
+            textAreaThread.Attributes["cols"] = "20";
+            textAreaThread.Attributes["class"] = "reply";
+            textAreaThread.Attributes["runat"] = "server";
+
+            divThread.Controls.Add(textAreaThread);
+
+            var button = new Button
+            {
+                ID = "btnPostReply",
+                Text = "Post Reply"
+            };
+
+            button.Attributes["class"] = "btn btn-primary";
+            button.Attributes["style"] = "display:none";
+            button.Attributes["runat"] = "server";
+            button.Command += PostReply;
+            button.CausesValidation = false;
+
+            divThread.Controls.Add(button);
+
+            PlaceHolder1.Controls.Add(divThread);
         }
 
         protected void PostReply(object sender, EventArgs e)
         {
-            if (Session["curUser"] == null) return;
+            if (Session["curUser"] == null || curThread == null) return;
+            if (db == null) db = FirestoreDb.Create("cen-project-d757f");
+            if (chatRef == null) chatRef = db.Collection("chatThreads");
+
+            //Check if user is in database
+            user = (FirebaseAdmin.Auth.UserRecord)Session["curUser"];
+            db = FirestoreDb.Create("cen-project-d757f");
+
+            chatRef = db.Collection("chatThreads");
+
+            DocumentReference docref = db.Collection("chatThreads").Document(curThread.ToString()).Collection("replies").Document(Guid.NewGuid().ToString());
+            DateTime unixEpoch = new DateTime(1970, 1, 1);
+            DateTime now = DateTime.Now;
+
+            double milliseconds = (now - unixEpoch).TotalMilliseconds;
+            var ct = Page.FindControl("ctl00");
+            var form = ct.Controls[3];
+            //var placeholder = form.FindControl("MainContent");
+            //var list = placeholder.FindControl("threadList");
+            //var placeholder1 = list.FindControl("PlaceHolder1");
+            //var thread = placeholder1.FindControl("thread1");
+            //var box = thread.FindControl("replyBox");
+
+            //Add thread to database
+            Dictionary<string, object> newThread = new Dictionary<string, object>
+            {
+                {"postedBy", user.Email.Substring(0, user.Email.IndexOf('@')) },
+                {"message", "" },
+                {"milliseconds", milliseconds }
+            };
+            _ = docref.SetAsync(newThread).Result;
+            GetThreads(new Guid());
+
+        }
+
+        protected void GetReplies()
+        {
+            CollectionReference colref = db.Collection("chatThreads").Document(curThread.ToString()).Collection("replies");
+            var x = colref.OrderByDescending("milliseconds");
+            QuerySnapshot qs = x.GetSnapshotAsync().Result;
+            StringBuilder s = new StringBuilder();
+            foreach (DocumentSnapshot snapshot in qs.Documents)
+            {
+                s.AppendLine(snapshot.Id);
+                s.AppendLine(snapshot.GetValue<string>("postedBy"));
+                s.AppendLine(new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
+                s.AppendLine(snapshot.GetValue<string>("message"));
+            }
         }
 
         public void GetThreads(Guid curThread)
         {
             if (Session["curUser"] == null) return;
-            user = (FirebaseAdmin.Auth.UserRecord)Session["curUser"];
             db = FirestoreDb.Create("cen-project-d757f");
             chatRef = db.Collection("chatThreads");
 
