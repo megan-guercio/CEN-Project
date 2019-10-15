@@ -45,8 +45,6 @@ textarea {
 
 .box {
     font-family: 'Lato', sans-serif;
-    box-shadow: 1px 1px 10px 1px #212121;
-    border-radius: 4px;
     padding: 10px;
     box-shadow: 1px 1px 10px 1px #212121;
     background: #ffffff;
@@ -59,6 +57,37 @@ textarea {
     word-break: break-word;
     overflow:hidden;
     position:relative;
+}
+
+.thread {
+    font-family: 'Lato', sans-serif;
+    box-shadow: 1px 1px 10px 1px #212121;
+    padding: 10px;
+    background: #ffffff;
+    width: 500px;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 500px;
+    word-break: break-word;
+    position: relative;
+}
+
+.reply {
+    font-family: 'Lato', sans-serif;
+    padding: 10px;
+    background: #ffffff;
+    height: 180px;
+    width: 480px;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 480px;
+    max-height: 180px;
+    word-break: break-word;
+    position: absolute;
+    display:none;
+    bottom:10px;
+    right:10px;
+    margin-bottom:40px
 }
 
 .center {

@@ -6,8 +6,11 @@
     
     <br />
     <input id="btnStartThread" type="button" style="float:left; margin-right:50px" class="btn btn-primary" value="Start Thread" onclick="startThreadPopUp()" />
-    <div id="threadList" style="float:left;" runat="server"></div>
+    <div id="threadList" style="float:left;" runat="server">
+        <asp:PlaceHolder runat="server" ID="PlaceHolder1"></asp:PlaceHolder>
+    </div>
     <br />
+    
     <div id="emptyThread" class="popup" style="padding: 0px 15px 15px 15px;">
         <div class="center">
                 <h2>Let's start a thread!</h2>
@@ -23,16 +26,23 @@
         </div>
     </div>
      <script>
-            function startThreadPopUp() {
-                $("#emptyThread").center();
-                $("#emptyThread").fadeIn();
-                $("#versionMask").fadeIn();
+         function startThreadPopUp() {
+             $("#emptyThread").center();
+             $("#emptyThread").fadeIn();
+             $("#versionMask").fadeIn();
          }
          function startThreadHide() {
-                $("#emptyThread").fadeOut();
+             $("#emptyThread").fadeOut();
              $("#versionMask").fadeOut();
              return true;
-            }
+         }
+
+         function startReply() {
+             document.getElementById('imgReply').style.display = "none";
+             document.getElementById('pMessage').style.marginBottom = "215px";
+             document.getElementById('replyBox').style.display = "block";
+             document.getElementById('btnPostReply').style.display = "block";
+         }
          </script>
     
 </asp:Content>

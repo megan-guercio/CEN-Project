@@ -73,21 +73,22 @@ namespace CEN_Project
             if (chatRef == null) chatRef = db.Collection("chatThreads");
             DocumentReference docref = db.Collection("chatThreads").Document(curThread.ToString());
             DocumentSnapshot snapshot = docref.GetSnapshotAsync().Result;
-            var postedBy = snapshot.GetValue<string>("postedBy");
-            var datePosted = new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds"));
-            var message = snapshot.GetValue<string>("message");
-            var title = snapshot.GetValue<string>("title");
             StringBuilder s = new StringBuilder();
-            s.AppendLine("<div id=\"thread1\" runat=\"server\" class=\"box\">");
-            s.AppendLine("<div style=\"height:100px;width:500px;bottom:0;position:absolute;background:linear-gradient(to bottom, transparent 0%, white 90%);\"></div><h4 style=\"color: darkslategray;\"><a href=\"Chat.aspx?tid=" + snapshot.Id + "\">" + snapshot.GetValue<string>("title") + "</a></h4><p style=\"color:lightslategrey; text-overflow:clip\">");
+            s.AppendLine("<div id=\"thread1\" runat=\"server\" class=\"thread\"><img id=\"imgReply\" onclick=\"startReply()\" src=\"Images/reply-arrow.png\" style=\"position: absolute; bottom: 10px; right: 10px; height: 20px;\">");
+            s.AppendLine("<h4 style=\"color: darkslategray;\"><a href=\"Chat.aspx?tid=" + snapshot.Id + "\">" + snapshot.GetValue<string>("title") + "</a></h4><p id=\"pMessage\" style=\"color:lightslategrey\">");
             s.AppendLine("Posted by user: " + snapshot.GetValue<string>("postedBy"));
             s.AppendLine(" at: " + new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
             s.AppendLine("<br/><br/>");
-            s.AppendLine(snapshot.GetValue<string>("message"));
-            s.AppendLine("</p></div>");
+            s.AppendLine(@snapshot.GetValue<string>("message"));
+            s.AppendLine("<br/><br/></p><textarea id=\"replyBox\" name=\"replyBox\" rows=\"2\" cols=\"20\" class=\"reply\" runat=\"server\"></textarea></div>");
             s.AppendLine("<br/><br/>");
 
             threadList.InnerHtml = s.ToString();
+        }
+
+        protected void PostReply(object sender, EventArgs e)
+        {
+            if (Session["curUser"] == null) return;
         }
 
         public void GetThreads(Guid curThread)
