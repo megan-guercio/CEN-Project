@@ -26,19 +26,13 @@ namespace CEN_Project
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Request.QueryString["tid"] != null)
+                Guid.TryParse(Request.QueryString["tid"], out curThread);
         }
 
         protected void Page_LoadComplete(object sender, EventArgs e)
         {
             if (Session["curUser"] == null) Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>loginPopUp()</script>");
-
-            //OnClick for btnPostReply
-            
-
-            if (Request.QueryString["tid"] != null)
-                Guid.TryParse(Request.QueryString["tid"], out curThread);
-
-            if (Page.Request.Form.ToString().Contains("btnPostReply=Post+Reply")) PostReply(null, EventArgs.Empty);
             GetThreads(curThread);
         }
 
@@ -66,7 +60,8 @@ namespace CEN_Project
                 {"title", @txtTitle.Text }
             };
             _ = docref.SetAsync(newThread).Result;
-            GetThreads(new Guid());
+
+            curThread = new Guid();
         }
 
         private void GetThread(Guid curThread)
@@ -77,64 +72,41 @@ namespace CEN_Project
             DocumentReference docref = db.Collection("chatThreads").Document(curThread.ToString());
             DocumentSnapshot snapshot = docref.GetSnapshotAsync().Result;
 
-            System.Web.UI.HtmlControls.HtmlGenericControl divThread = new System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            divThread.ID = "thread1";
-            divThread.Attributes["runat"] = "server";
-            divThread.Attributes["class"] = "thread";
+            aThread.HRef = "Chat.aspx?tid=" + curThread.ToString();
+            h4Thread.InnerText = snapshot.GetValue<string>("title");
+            pMessage.InnerText = snapshot.GetValue<string>("message");
 
-            System.Web.UI.HtmlControls.HtmlGenericControl imgThread = new System.Web.UI.HtmlControls.HtmlGenericControl("img");
-            imgThread.ID = "imgReply";
-            imgThread.Attributes["onclick"] = "startReply()";
-            imgThread.Attributes["src"] = "Images/reply-arrow.png";
-            imgThread.Attributes["style"] = "position:absolute;bottom:10px;right:10px;height:20px;";
+            StringBuilder s = new StringBuilder();
+            s.AppendLine("Posted by user: " + snapshot.GetValue<string>("postedBy"));
+            s.AppendLine(" at: " + new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
+            s.AppendLine("<br/><br/>");
+            s.AppendLine(snapshot.GetValue<string>("message"));
+            s.AppendLine("<br/><br/>");
 
-            divThread.Controls.Add(imgThread);
+            pMessage.InnerHtml = s.ToString();
 
-            System.Web.UI.HtmlControls.HtmlGenericControl h4Thread = new System.Web.UI.HtmlControls.HtmlGenericControl("h4");
-            h4Thread.Attributes["style"] = "color: darkslategray;";
+            CollectionReference colref = db.Collection("chatThreads").Document(curThread.ToString()).Collection("replies");
 
-            System.Web.UI.HtmlControls.HtmlGenericControl aThread = new System.Web.UI.HtmlControls.HtmlGenericControl("a");
-            aThread.Attributes["href"] = "Chat.aspx?tid=" + snapshot.Id;
-            aThread.InnerText = snapshot.GetValue<string>("title");
-
-            h4Thread.Controls.Add(aThread);
-
-            divThread.Controls.Add(h4Thread);
-
-            System.Web.UI.HtmlControls.HtmlGenericControl pThread = new System.Web.UI.HtmlControls.HtmlGenericControl("p");
-            pThread.ID = "pMessage";
-            pThread.Attributes["style"] = "color: lightslategray";
-            pThread.InnerHtml = "Posted by user: " + snapshot.GetValue<string>("postedBy") + " at: " + 
-                new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString() + 
-                "<br/><br/>" + @snapshot.GetValue<string>("message") + "<br/><br/>";
-
-            divThread.Controls.Add(pThread);
-
-            System.Web.UI.HtmlControls.HtmlGenericControl textAreaThread = new System.Web.UI.HtmlControls.HtmlGenericControl("textarea");
-            textAreaThread.ID = "replyBox";
-            textAreaThread.Attributes["name"] = "replyBox";
-            textAreaThread.Attributes["rows"] = "2";
-            textAreaThread.Attributes["cols"] = "20";
-            textAreaThread.Attributes["class"] = "reply";
-            textAreaThread.Attributes["runat"] = "server";
-
-            divThread.Controls.Add(textAreaThread);
-
-            var button = new Button
+            var x = colref.OrderBy("milliseconds");
+            QuerySnapshot qs = x.GetSnapshotAsync().Result;
+            s = new StringBuilder();
+            int i = 1;
+            foreach (DocumentSnapshot sp in qs.Documents)
             {
-                ID = "btnPostReply",
-                Text = "Post Reply"
-            };
+                s.AppendLine("<div id=\"reply" + i.ToString() + "\" runat=\"server\" class=\"oldreply\">");
+                s.AppendLine("<p style=\"color:lightslategrey;\">");
+                s.AppendLine("Posted by user: " + sp.GetValue<string>("postedBy"));
+                s.AppendLine(" at: " + new DateTime(1970, 1, 1).AddMilliseconds(sp.GetValue<double>("milliseconds")).ToString());
+                s.AppendLine("<br/><br/>");
+                s.AppendLine(sp.GetValue<string>("message"));
+                s.AppendLine("</p></div>");
+                s.AppendLine("<br/>");
 
-            button.Attributes["class"] = "btn btn-primary";
-            button.Attributes["style"] = "display:none";
-            button.Attributes["runat"] = "server";
-            button.Command += PostReply;
-            button.CausesValidation = false;
+                i++;
+            }
 
-            divThread.Controls.Add(button);
-
-            PlaceHolder1.Controls.Add(divThread);
+            oldReplies.InnerHtml = s.ToString();
+            threadIsolated.Style["display"] = "block";
         }
 
         protected void PostReply(object sender, EventArgs e)
@@ -154,39 +126,15 @@ namespace CEN_Project
             DateTime now = DateTime.Now;
 
             double milliseconds = (now - unixEpoch).TotalMilliseconds;
-            var ct = Page.FindControl("ctl00");
-            var form = ct.Controls[3];
-            //var placeholder = form.FindControl("MainContent");
-            //var list = placeholder.FindControl("threadList");
-            //var placeholder1 = list.FindControl("PlaceHolder1");
-            //var thread = placeholder1.FindControl("thread1");
-            //var box = thread.FindControl("replyBox");
 
             //Add thread to database
-            Dictionary<string, object> newThread = new Dictionary<string, object>
+            Dictionary<string, object> newReply = new Dictionary<string, object>
             {
                 {"postedBy", user.Email.Substring(0, user.Email.IndexOf('@')) },
-                {"message", "" },
+                {"message", replyBox.InnerText },
                 {"milliseconds", milliseconds }
             };
-            _ = docref.SetAsync(newThread).Result;
-            GetThreads(new Guid());
-
-        }
-
-        protected void GetReplies()
-        {
-            CollectionReference colref = db.Collection("chatThreads").Document(curThread.ToString()).Collection("replies");
-            var x = colref.OrderByDescending("milliseconds");
-            QuerySnapshot qs = x.GetSnapshotAsync().Result;
-            StringBuilder s = new StringBuilder();
-            foreach (DocumentSnapshot snapshot in qs.Documents)
-            {
-                s.AppendLine(snapshot.Id);
-                s.AppendLine(snapshot.GetValue<string>("postedBy"));
-                s.AppendLine(new DateTime(1970, 1, 1).AddMilliseconds(snapshot.GetValue<double>("milliseconds")).ToString());
-                s.AppendLine(snapshot.GetValue<string>("message"));
-            }
+            _ = docref.SetAsync(newReply).Result;
         }
 
         public void GetThreads(Guid curThread)

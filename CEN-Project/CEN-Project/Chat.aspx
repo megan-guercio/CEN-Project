@@ -6,7 +6,13 @@
     <br />
     <input id="btnStartThread" type="button" style="float:left; margin-right:50px" class="btn btn-primary" value="Start Thread" onclick="startThreadPopUp()" />
         <div id="threadList" style="float: left;" runat="server">
-            <asp:PlaceHolder runat="server" ID="PlaceHolder1"></asp:PlaceHolder>
+            <div id="threadIsolated" runat="server" style="display: none;margin-bottom:20px" class="thread">
+                <img id="imgReply" onclick="startReply()" src="Images/reply-arrow.png" style="position: absolute; bottom: 10px; right: 10px; height: 20px;">
+                <h4 style="color: darkslategray;" runat="server" id="h4Thread"><a id="aThread" runat="server"></a></h4>
+                <p id="pMessage" runat="server" style="color: lightslategray; position:relative"></p>
+                <textarea id="replyBox" name="replyBox" rows="2" cols="20" class="reply" style="display:none" runat="server"></textarea>
+                <asp:Button runat="server" ID="btnPostReply" Text="Post Reply" OnClick="PostReply" class="btn btn-primary" Style="display: none;"></asp:Button></div>
+            <div id="oldReplies" runat="server"></div>
         </div>
     <br />
     
@@ -37,8 +43,7 @@
          }
 
          function startReply() {
-             document.getElementById('MainContent_imgReply').style.display = "none";
-             document.getElementById('MainContent_pMessage').style.marginBottom = "180px";
+             document.getElementById('imgReply').style.display = "none";
              document.getElementById('MainContent_replyBox').style.display = "block";
              document.getElementById('MainContent_btnPostReply').style.display = "block";
          }
