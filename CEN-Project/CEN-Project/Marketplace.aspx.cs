@@ -19,16 +19,14 @@ namespace CEN_Project
 {
     public partial class Marketplace : System.Web.UI.Page
     {
-      //  private FirestoreDb db;
-       // private CollectionReference chatRef;
-        //private FirebaseAdmin.Auth.UserRecord user;
-        //private Guid curThread;
-
+        private FirestoreDb db;
+        private CollectionReference chatRef;
+        private FirebaseAdmin.Auth.UserRecord user;
+        
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Request.QueryString["tid"] != null)
-              //  Guid.TryParse(Request.QueryString["tid"], out curThread);
+
         }
 
         //Please don't remove
