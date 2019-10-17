@@ -14,7 +14,7 @@
 
     <script>
         function startMakePostPopUp() {
-          
+            window.open('MakePost.aspx');
         }
     </script>
 
