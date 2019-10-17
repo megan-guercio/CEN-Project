@@ -82,8 +82,13 @@
                             <a id="lbChat" href="Chat.aspx" runat="server">Chat</a></li>
                         <li>
                             <a id="lbLivestream" href="Livestream.aspx" runat="server">Livestream</a></li>
-                        <li>
-                            <a id="lbTournaments" href="Tournaments.aspx" runat="server">Tournaments</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" id="lbTournaments" href="#" data-toggle="dropdown" role ="button" aria-haspopup="true" aria-expanded="false">Tournaments <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="Tournaments.aspx" runat="server">Upcoming Tournaments</a></li>
+                                <li><a href="OldTournaments.aspx" runat="server">Past Tournaments</a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>

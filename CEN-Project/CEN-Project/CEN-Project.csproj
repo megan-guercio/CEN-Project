@@ -316,6 +316,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Images\reply-arrow.png" />
+    <Content Include="OldTournaments.aspx" />
     <Content Include="Scripts\cen-project-d757f-firebase-adminsdk-k6z2f-53b4c90b47.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Livestream.aspx" />
@@ -396,6 +397,13 @@
     </Compile>
     <Compile Include="Marketplace.aspx.designer.cs">
       <DependentUpon>Marketplace.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OldTournaments.aspx.cs">
+      <DependentUpon>OldTournaments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OldTournaments.aspx.designer.cs">
+      <DependentUpon>OldTournaments.aspx</DependentUpon>
     </Compile>
     <Compile Include="Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
