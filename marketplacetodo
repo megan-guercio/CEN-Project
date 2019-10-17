@@ -33,3 +33,7 @@ foreach(string email in emailArray)
 
      smtp.Send(msg);
  }
+
+-how to make comment boxes?
+https://www.ittutorialswithexample.com/2015/01/create-simple-comment-box-in-aspnet.html
+https://freeasphosting.net/comment-box-exercise.html
