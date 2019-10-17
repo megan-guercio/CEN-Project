@@ -13,3 +13,23 @@ in MakePost file:
 -send email to admin to approve the post including nameofitem, itemprice, itempicture 
         -> send email to user if post is not approved
 -make the post upon approval
+
+
+
+for later use:
+-how to send email to admin or user?
+******[found from StackOverflow]********
+
+foreach(string email in emailArray)
+{
+     SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+     smtp.UseDefaultCredentials = false;
+     smtp.Credentials = new NetworkCredential("tayyib@gmail.com", "xxxxxxxxx");
+     smtp.EnableSsl = true;
+
+     MailMessage msg = new MailMessage("tayyib@gmail.com", email); 
+     msg.Subject = "Test1";
+     msg.Body = "Test2";
+
+     smtp.Send(msg);
+ }
