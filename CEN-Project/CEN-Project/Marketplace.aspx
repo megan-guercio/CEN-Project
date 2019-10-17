@@ -2,11 +2,24 @@
 
   
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    
- <h2 align="center">MarketPlace</h2>
+    <div id="container" class="container body-content">
 
-    <div style="position: relative; width:600px;height:800px;">
-        <div style="position:absolute; bottom:5px; align:center;"> Have something you want to sell? </div>
-    </div>
+        <br />
+
+
+
+        <h3 style="vertical-align:top; position:fixed absolute; left:50%"> Have Something You Want to Sell? </h3>
+        <input id="btnMakePost" type="button" style="vertical-align:top; position:fixed relative; left: 50%"  class="btn btn-primary" value="Make Post" onclick="startMakePostPopUp()" />
+       
+        <br />
+        
+        </div>
+
+
+    <script>
+        function startMakePostPopUp() {
+          
+        }
+    </script>
 
 </asp:Content>

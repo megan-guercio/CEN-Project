@@ -7,9 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CEN_Project {
-    
-    
-    public partial class Marketplace {
+namespace CEN_Project
+{
+
+
+    public partial class Marketplace
+    {
     }
 }

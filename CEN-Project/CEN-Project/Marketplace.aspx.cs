@@ -4,21 +4,39 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Security;
+using Firebase;
+using Firebase.Auth;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis;
+using Firebase.Database;
+using Google.Cloud.Firestore;
 using System.Diagnostics;
+using System.Text;
 
 namespace CEN_Project
 {
     public partial class Marketplace : System.Web.UI.Page
     {
+      //  private FirestoreDb db;
+       // private CollectionReference chatRef;
+        //private FirebaseAdmin.Auth.UserRecord user;
+        //private Guid curThread;
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            //if (Request.QueryString["tid"] != null)
+              //  Guid.TryParse(Request.QueryString["tid"], out curThread);
         }
 
         //Please don't remove
         protected void Page_LoadComplete(object sender, EventArgs e)
         {
             if (Session["curUser"] == null) Page.ClientScript.RegisterStartupScript(GetType(), "LoggedIn", "<script type='text/javascript'>loginPopUp()</script>");
+
         }
+
     }
 }
