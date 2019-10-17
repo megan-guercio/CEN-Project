@@ -1,0 +1,15 @@
+Things to do for MarketPlace Tab
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+in MarketPlace file:
+-make posts & comments on posts visible 
+-send email to user if their post is commented on
+
+
+
+in MakePost file:
+-collect all data into database {username, nameofitem, itemprice, itempicture}
+-send email to admin to approve the post including nameofitem, itemprice, itempicture 
+        -> send email to user if post is not approved
+-make the post upon approval
