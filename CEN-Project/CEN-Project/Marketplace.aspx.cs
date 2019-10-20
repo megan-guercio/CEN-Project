@@ -47,7 +47,7 @@ namespace CEN_Project
 
         }
 
-        private void interestedBtnClicked(object sender, EventArgs e)      //buyer marks "interested" on a post, by putting a checkmark in the box
+        private void interestedBtnClicked(object sender, EventArgs e)   //buyer marks "interested" on a post, by putting a checkmark in the box
         {
 
         }
