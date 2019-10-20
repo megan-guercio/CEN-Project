@@ -22,7 +22,8 @@ namespace CEN_Project
         private FirestoreDb db;
         private CollectionReference chatRef;
         private FirebaseAdmin.Auth.UserRecord user;
-        
+        private Guid curThread;
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -38,9 +39,28 @@ namespace CEN_Project
 
         protected void startMakePostPopUp(object sender, EventArgs e)
         {
-            
+
         }
 
+        private void sellerInbox(object sender, EventArgs e)//sellers and buyers have "private messaging" inbox to the left of the screen
+        {
+
+        }
+
+        private void interestedBtnClicked(object sender, EventArgs e)      //buyer marks "interested" on a post, by putting a checkmark in the box
+        {
+
+        }
+
+        private void sellerStats(object sender, EventArgs e)  //seller can view items for sale and "who's interested" option
+        {
+
+        }
+
+        private void whosInterested(object sender, EventArgs e)      //seller selects "Who's Interested?" and a list of interested buyers pops up
+        {
+
+        }
 
 
 
